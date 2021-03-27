@@ -3,7 +3,7 @@
     // $otp_token = strval(mt_rand(000000, 999999));
     // echo $otp_token;
     echo "Test Server. Don't waste your time.\n";
-    $otp_token = "000011";
+    $otp_token = "000011"; // Test token
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $json = file_get_contents('php://input');
         $data = json_decode($json);
