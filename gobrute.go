@@ -58,7 +58,6 @@ func main() {
 }
 
 func runThreads(threadNum int) {
-
 	defer wg.Done()
 	limit := threadNum * otpTranche
 	for i := limit - otpTranche; i <= limit; i++ {
