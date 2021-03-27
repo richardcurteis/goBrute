@@ -17,7 +17,7 @@
     }
 
     if ($user_otp === $otp_token) {
-        setcookie('bro_server', 'otp_has_been_found');
+        setcookie('test_server', 'otp_has_been_found');
         $data = "null";
     } else {
         $data = '{"detail": {"exception": "InvalidOTPValueError", "message": "Invalid 2FA value"}}';
